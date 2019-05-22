@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+  <canvas id="canvas" width="300" height="300" style="border:2px solid black"></canvas>
+  <script>
+      var centerX = 150
+      var centerY = 200
+      var canvas = document.getElementById('canvas');
+      var ctx = canvas.getContext("2d");
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 100, -Math.PI, 0);
+      ctx.stroke();
+      //tick at 0
+      ctx.beginPath();
+      ctx.moveTo(50,200);
+      ctx.lineTo(60,200);
+      ctx.stroke();
+      // tick at 100
+      ctx.beginPath();
+      ctx.moveTo(240,200);
+      ctx.lineTo(250,200);
+      ctx.stroke();
+      //tick at 50
+      ctx.beginPath();
+      ctx.moveTo(150,100);
+      ctx.lineTo  (150,110);
+      ctx.stroke();
+    </script>
+  </body>
+</html>
