@@ -9,10 +9,12 @@
   <script>
       var centerX = 150
       var centerY = 200
+      var radius = 100
+      var tickLength = 5
       var canvas = document.getElementById('canvas');
       var ctx = canvas.getContext("2d");
       ctx.beginPath();
-      ctx.arc(centerX, centerY, 100, -Math.PI, 0);
+      ctx.arc(centerX, centerY, radius, -Math.PI, 0);
       ctx.stroke();
       //tick at 0
       ctx.beginPath();
@@ -27,8 +29,38 @@
       //tick at 50
       ctx.beginPath();
       ctx.moveTo(150,100);
-      ctx.lineTo  (150,110);
+      ctx.lineTo(150,110);
       ctx.stroke();
+      //25%
+      ctx.beginPath();
+      var x25 = getCircleX(0.25);
+      var y25 = getCircleY(0.25);
+      ctx.moveTo(x25,y25);
+      ctx.lineTo(getTickInner(x25,y25)[0],getTickInner(x25,y25)[1]);
+      ctx.stroke();
+      //75%
+      ctx.beginPath();
+      var x75 = getCircleX(0.75);
+      var y75 = getCircleY(0.75);
+      ctx.moveTo(x75,y75);
+      ctx.lineTo(getTickInner(x75,y75)[0],getTickInner(x75,y75)[1]);
+      ctx.stroke();
+
+
+      function getCircleX(percentDecimal){
+        return radius * Math.sin(Math.PI * (percentDecimal - 0.5)) + centerX;
+      }
+      function getCircleY(percentDecimal){
+        return radius * -1 * Math.cos(Math.PI * (percentDecimal - 0.5)) + centerY;
+      }
+      function getTickInner(x,y){
+        var diff = Math.sqrt(tickLength * tickLength / 2);
+        if (x < centerX){
+          return [x+diff, y+diff]
+        } else {
+          return [x-diff, y+diff]
+        }
+      }
     </script>
   </body>
 </html>
