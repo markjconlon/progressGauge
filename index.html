@@ -7,9 +7,9 @@
   <body>
   <canvas id="canvas" width="300" height="300" style="border:2px solid black"></canvas>
   <script>
-      var centerX = 150
+      var centerX = 150 // canavs.width / 2
       var centerY = 200
-      var radius = 100
+      var radius = 145 //cannot be greater than centerX
       var tickLength = 5
       var canvas = document.getElementById('canvas');
       var ctx = canvas.getContext("2d");
@@ -18,18 +18,18 @@
       ctx.stroke();
       //tick at 0
       ctx.beginPath();
-      ctx.moveTo(50,200);
-      ctx.lineTo(60,200);
+      ctx.moveTo(centerX - radius,centerY);
+      ctx.lineTo(centerX - radius + 2 * tickLength, centerY);
       ctx.stroke();
       // tick at 100
       ctx.beginPath();
-      ctx.moveTo(240,200);
-      ctx.lineTo(250,200);
+      ctx.moveTo(centerX+radius - 2 * tickLength, centerY);
+      ctx.lineTo(centerX+radius,centerY);
       ctx.stroke();
       //tick at 50
       ctx.beginPath();
-      ctx.moveTo(150,100);
-      ctx.lineTo(150,110);
+      ctx.moveTo(centerX,centerY - radius);
+      ctx.lineTo(centerX,centerY - radius + 2 * tickLength);
       ctx.stroke();
       //25%
       ctx.beginPath();
@@ -45,6 +45,43 @@
       ctx.moveTo(x75,y75);
       ctx.lineTo(getTickInner(x75,y75)[0],getTickInner(x75,y75)[1]);
       ctx.stroke();
+
+      var pointsOfTriangle = drawPointer(0.8);
+      function drawPointer(percentage){
+        var circleX = getCircleX(percentage);
+        var circleY = getCircleY(percentage);
+        var slope = (centerY - circleY) / (centerX - circleX);
+        var xDiff = tickLength;
+        //using pointSlope form y - k = m (x - h)
+        var x1 = centerX - xDiff
+        var y1 = (-1 * (1/slope)) * (x1 - centerX) + centerY;
+        var x2 = centerX + xDiff
+        var y2 = (-1 * (1/slope)) * (x2 - centerX) + centerY;
+
+        console.log([
+          [circleX, circleY],
+          [x1,y1],
+          [x2,y2],
+        ])
+
+        ctx.beginPath()
+        ctx.moveTo(circleX,circleY);
+        ctx.lineTo(x1,y1);
+        ctx.lineTo(x2,y2);
+        ctx.closePath();
+        // the outline
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#666666';
+        ctx.stroke();
+        // the fill color
+        ctx.fillStyle = "#666666";
+        ctx.fill();
+        //circle around pointer
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 5, 2 * Math.PI, 0);
+        ctx.stroke();
+
+      }
 
 
       function getCircleX(percentDecimal){
