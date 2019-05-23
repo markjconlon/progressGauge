@@ -6,6 +6,15 @@
   </head>
   <body>
   <canvas id="canvas" width="300" height="300" style="border:2px solid black"></canvas>
+
+  <div id="values">
+
+  </div>
+  <label for="target"> Sales Target </label>
+  <input type="number" id="" name="target" value="100"/>
+
+  <label for="current"> Sales Current </label>
+  <input type="number" id="" name="current" value="80"/>
   <script>
       var centerX = 150 // canavs.width / 2
       var centerY = 200
@@ -13,40 +22,58 @@
       var tickLength = 5
       var canvas = document.getElementById('canvas');
       var ctx = canvas.getContext("2d");
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, radius, -Math.PI, 0);
-      ctx.stroke();
-      //tick at 0
-      ctx.beginPath();
-      ctx.moveTo(centerX - radius,centerY);
-      ctx.lineTo(centerX - radius + 2 * tickLength, centerY);
-      ctx.stroke();
-      // tick at 100
-      ctx.beginPath();
-      ctx.moveTo(centerX+radius - 2 * tickLength, centerY);
-      ctx.lineTo(centerX+radius,centerY);
-      ctx.stroke();
-      //tick at 50
-      ctx.beginPath();
-      ctx.moveTo(centerX,centerY - radius);
-      ctx.lineTo(centerX,centerY - radius + 2 * tickLength);
-      ctx.stroke();
-      //25%
-      ctx.beginPath();
-      var x25 = getCircleX(0.25);
-      var y25 = getCircleY(0.25);
-      ctx.moveTo(x25,y25);
-      ctx.lineTo(getTickInner(x25,y25)[0],getTickInner(x25,y25)[1]);
-      ctx.stroke();
-      //75%
-      ctx.beginPath();
-      var x75 = getCircleX(0.75);
-      var y75 = getCircleY(0.75);
-      ctx.moveTo(x75,y75);
-      ctx.lineTo(getTickInner(x75,y75)[0],getTickInner(x75,y75)[1]);
-      ctx.stroke();
+      var current = 80;
+      var target = 100;
 
-      var pointsOfTriangle = drawPointer(0.8);
+      document.addEventListener("change", function(e){
+        if(e.target.name === "target"){
+          target = e.target.value;
+        } else if(e.target.name === "current"){
+          current = e.target.value;
+        };
+        //clear and reDraw
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        draw(current/target);
+      })
+
+      function draw(tempPercentage) {
+        var percentage = tempPercentage > 1 ? 1 : (tempPercentage < 0 ? 0 : tempPercentage);
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, -Math.PI, 0);
+        ctx.stroke();
+        //tick at 0
+        ctx.beginPath();
+        ctx.moveTo(centerX - radius,centerY);
+        ctx.lineTo(centerX - radius + 2 * tickLength, centerY);
+        ctx.stroke();
+        // tick at 100
+        ctx.beginPath();
+        ctx.moveTo(centerX+radius - 2 * tickLength, centerY);
+        ctx.lineTo(centerX+radius,centerY);
+        ctx.stroke();
+        //tick at 50
+        ctx.beginPath();
+        ctx.moveTo(centerX,centerY - radius);
+        ctx.lineTo(centerX,centerY - radius + 2 * tickLength);
+        ctx.stroke();
+        //25%
+        ctx.beginPath();
+        var x25 = getCircleX(0.25);
+        var y25 = getCircleY(0.25);
+        ctx.moveTo(x25,y25);
+        ctx.lineTo(getTickInner(x25,y25)[0],getTickInner(x25,y25)[1]);
+        ctx.stroke();
+        //75%
+        ctx.beginPath();
+        var x75 = getCircleX(0.75);
+        var y75 = getCircleY(0.75);
+        ctx.moveTo(x75,y75);
+        ctx.lineTo(getTickInner(x75,y75)[0],getTickInner(x75,y75)[1]);
+        ctx.stroke();
+
+        drawPointer(percentage);
+      }
+
       function drawPointer(percentage){
         var circleX = getCircleX(percentage);
         var circleY = getCircleY(percentage);
@@ -83,7 +110,6 @@
 
       }
 
-
       function getCircleX(percentDecimal){
         return radius * Math.sin(Math.PI * (percentDecimal - 0.5)) + centerX;
       }
@@ -98,6 +124,7 @@
           return [x-diff, y+diff]
         }
       }
+      draw(current/target);
     </script>
   </body>
 </html>
