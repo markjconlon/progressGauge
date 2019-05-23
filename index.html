@@ -14,7 +14,7 @@
   <input type="number" id="" name="target" value="100"/>
 
   <label for="current"> Sales Current </label>
-  <input type="number" id="" name="current" value="80"/>
+  <input type="number" id="" name="current" value="50"/>
   <script>
       var centerX = 150 // canavs.width / 2
       var centerY = 200
@@ -22,7 +22,7 @@
       var tickLength = 5
       var canvas = document.getElementById('canvas');
       var ctx = canvas.getContext("2d");
-      var current = 80;
+      var current = 50;
       var target = 100;
 
       document.addEventListener("change", function(e){
@@ -77,25 +77,13 @@
       function drawPointer(percentage){
         var circleX = getCircleX(percentage);
         var circleY = getCircleY(percentage);
-        var slope = (centerY - circleY) / (centerX - circleX);
-        var xDiff = tickLength;
-        //using pointSlope form y - k = m (x - h)
-        var x1 = centerX - xDiff
-        var y1 = (-1 * (1/slope)) * (x1 - centerX) + centerY;
-        var x2 = centerX + xDiff
-        var y2 = (-1 * (1/slope)) * (x2 - centerX) + centerY;
-
-        console.log([
-          [circleX, circleY],
-          [x1,y1],
-          [x2,y2],
-        ])
-
         ctx.beginPath()
         ctx.moveTo(circleX,circleY);
-        ctx.lineTo(x1,y1);
-        ctx.lineTo(x2,y2);
+        //new line
+        ctx.lineTo(centerX - Math.sin(Math.PI * percentage) * tickLength, centerY + Math.cos(Math.PI * percentage) * tickLength );
+        ctx.lineTo(centerX + Math.sin(Math.PI * percentage) * tickLength, centerY - Math.cos(Math.PI * percentage) * tickLength);
         ctx.closePath();
+
         // the outline
         ctx.lineWidth = 3;
         ctx.strokeStyle = '#666666';
